@@ -80,8 +80,10 @@ RUN chmod +x /piston_api/src/docker-entrypoint.sh
 WORKDIR /piston
 RUN mkdir -p /piston/packages /piston/jobs && chown -R piston:piston /piston
 
+RUN mkdir -p /opt/piston-seed/packages /opt/piston-seed/jobs
+
 WORKDIR /piston_api
-RUN node -e "const Package=require('./src/package');(async()=>{const pkg=await Package.get_package('python','*');if(!pkg){throw new Error('python package not found in repo index');}await pkg.install();})().catch(err=>{console.error(err);process.exit(1);});"
+RUN PISTON_DATA_DIRECTORY=/opt/piston-seed node -e "require('nocamel');const Package=require('./src/package');(async()=>{const pkg=await Package.get_package('python','*');if(!pkg){throw new Error('python package not found in repo index');}await pkg.install();})().catch(err=>{console.error(err);process.exit(1);});"
 
 EXPOSE 2000
 

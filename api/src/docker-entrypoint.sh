@@ -16,6 +16,17 @@ if [ ! -e "$CGROUP_FS/cgroup.subtree_control" ]; then
   exit 1
 fi
 
+SEED_PACKAGES_DIR="/opt/piston-seed/packages"
+TARGET_PACKAGES_DIR="/piston/packages"
+
+if [ -d "$SEED_PACKAGES_DIR" ]; then
+  mkdir -p "$TARGET_PACKAGES_DIR"
+  if [ -z "$(find "$TARGET_PACKAGES_DIR" -mindepth 2 -maxdepth 3 -name .ppman-installed -print -quit 2>/dev/null)" ]; then
+    echo "Seeding preinstalled runtimes into ${TARGET_PACKAGES_DIR}"
+    cp -a "$SEED_PACKAGES_DIR"/. "$TARGET_PACKAGES_DIR"/
+  fi
+fi
+
 cd /sys/fs/cgroup && \
 mkdir isolate/ && \
 echo 1 > isolate/cgroup.procs && \

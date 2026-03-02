@@ -10,7 +10,7 @@ Build and run Piston (code execution engine) in Docker.
 ## Build image
 
 ```bash
-docker build -f Dockerfile_codex.sandbox -t craftslab/codex-sandbox:latest .
+./build.sh
 ```
 
 ## Run container
@@ -24,10 +24,18 @@ docker run --rm \
 	craftslab/codex-sandbox:latest
 ```
 
+On first startup, the container seeds preinstalled runtimes (including Python) into `/piston/packages` when this mounted directory is empty.
+
 ## Run with Docker Compose
 
 ```bash
 docker compose -f docker-compose-codex.sandbox.yaml up -d
+```
+
+## Stop with Docker Compose
+
+```bash
+docker compose -f docker-compose-codex.sandbox.yaml down
 ```
 
 ## Quick test
