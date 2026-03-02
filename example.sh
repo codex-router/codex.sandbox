@@ -3,12 +3,14 @@
 set -euo pipefail
 
 BASE_URL="${PISTON_URL:-http://localhost:2000}"
+RUNTIMES_FILE="$(mktemp)"
+trap 'rm -f "${RUNTIMES_FILE}"' EXIT
 
 echo "==> Query installed runtimes"
-curl -fsS "${BASE_URL}/api/v2/runtimes"
+curl -fsS "${BASE_URL}/api/v2/runtimes" | tee "${RUNTIMES_FILE}"
 echo
 
-if curl -fsS "${BASE_URL}/api/v2/runtimes" | grep -q '"language":"python"'; then
+if grep -q '"language":"python"' "${RUNTIMES_FILE}"; then
 	echo "==> Execute Python example"
 	curl -fsS -X POST "${BASE_URL}/api/v2/execute" \
 		-H 'Content-Type: application/json' \

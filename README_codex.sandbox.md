@@ -24,6 +24,12 @@ docker run --rm \
 	craftslab/codex-sandbox:latest
 ```
 
+## Run with Docker Compose
+
+```bash
+docker compose -f docker-compose-codex.sandbox.yaml up -d
+```
+
 ## Quick test
 
 ```bash

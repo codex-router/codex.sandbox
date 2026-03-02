@@ -7,4 +7,4 @@ set -e
 cd "$(dirname "$0")"
 
 echo "Building craftslab/codex-sandbox:latest Docker image..."
-docker build -t craftslab/codex-sandbox:latest .
+docker build -f Dockerfile_codex.sandbox -t craftslab/codex-sandbox:latest .

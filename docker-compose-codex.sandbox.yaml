@@ -1,0 +1,14 @@
+version: '3.2'
+
+services:
+    sandbox:
+        image: craftslab/codex-sandbox:latest
+        container_name: codex-sandbox
+        restart: always
+        privileged: true
+        ports:
+            - 2000:2000
+        volumes:
+            - ./codex-sandbox/packages:/piston/packages
+        tmpfs:
+            - /tmp:exec
