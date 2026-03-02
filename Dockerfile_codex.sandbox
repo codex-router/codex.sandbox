@@ -80,6 +80,9 @@ RUN chmod +x /piston_api/src/docker-entrypoint.sh
 WORKDIR /piston
 RUN mkdir -p /piston/packages /piston/jobs && chown -R piston:piston /piston
 
+WORKDIR /piston_api
+RUN node -e "const Package=require('./src/package');(async()=>{const pkg=await Package.get_package('python','*');if(!pkg){throw new Error('python package not found in repo index');}await pkg.install();})().catch(err=>{console.error(err);process.exit(1);});"
+
 EXPOSE 2000
 
 CMD ["/piston_api/src/docker-entrypoint.sh"]
