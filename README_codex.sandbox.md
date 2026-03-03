@@ -24,7 +24,8 @@ docker run --rm \
 	craftslab/codex-sandbox:latest
 ```
 
-On first startup, the container seeds preinstalled runtimes (including Python) into `/piston/packages` when this mounted directory is empty.
+On startup, the container seeds preinstalled runtimes into `/piston/packages` when this mounted directory is empty.
+Currently, the image preinstalls `bash` runtime and also backfills missing `bash` into `/piston/packages` even when that mounted directory already contains other runtimes.
 
 ## Run with Docker Compose
 

@@ -20,4 +20,10 @@ if ! grep -q '^\[' "${RUNTIMES_FILE}"; then
 	exit 1
 fi
 
-echo "Piston API is healthy. Runtimes endpoint returned a JSON array."
+if ! grep -q '"language":"bash"' "${RUNTIMES_FILE}"; then
+	echo "Piston API is reachable, but bash runtime is missing:"
+	cat "${RUNTIMES_FILE}"
+	exit 1
+fi
+
+echo "Piston API is healthy. Bash runtime is available."

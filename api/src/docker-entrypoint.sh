@@ -19,15 +19,31 @@ fi
 SEED_PACKAGES_DIR="/opt/piston-seed/packages"
 TARGET_PACKAGES_DIR="/piston/packages"
 
+has_runtime() {
+  local runtime="$1"
+  find "$TARGET_PACKAGES_DIR" -mindepth 1 -maxdepth 1 -type d -name "${runtime}-*" -print -quit 2>/dev/null | grep -q .
+}
+
 if [ -d "$SEED_PACKAGES_DIR" ]; then
   mkdir -p "$TARGET_PACKAGES_DIR"
   if [ -z "$(find "$TARGET_PACKAGES_DIR" -mindepth 2 -maxdepth 3 -name .ppman-installed -print -quit 2>/dev/null)" ]; then
     echo "Seeding preinstalled runtimes into ${TARGET_PACKAGES_DIR}"
     cp -a "$SEED_PACKAGES_DIR"/. "$TARGET_PACKAGES_DIR"/
   fi
+
+  if ! has_runtime bash; then
+    if find "$SEED_PACKAGES_DIR" -mindepth 1 -maxdepth 1 -type d -name "bash-*" -print -quit 2>/dev/null | grep -q .; then
+      echo "Seeding missing bash runtime into ${TARGET_PACKAGES_DIR}"
+      while IFS= read -r pkgdir; do
+        cp -a "$pkgdir" "$TARGET_PACKAGES_DIR"/
+      done < <(find "$SEED_PACKAGES_DIR" -mindepth 1 -maxdepth 1 -type d -name "bash-*" | sort)
+    else
+      echo "Runtime check warning: no bash runtime found in seed directory ${SEED_PACKAGES_DIR}"
+    fi
+  fi
 fi
 
-if find "$TARGET_PACKAGES_DIR" -mindepth 1 -maxdepth 1 -type d -name "bash-*" -print -quit 2>/dev/null | grep -q .; then
+if has_runtime bash; then
   echo "Runtime check: bash is available in ${TARGET_PACKAGES_DIR}"
 else
   echo "Runtime check warning: bash is NOT found in ${TARGET_PACKAGES_DIR}"

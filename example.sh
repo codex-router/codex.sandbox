@@ -10,17 +10,17 @@ echo "==> Query installed runtimes"
 curl -fsS "${BASE_URL}/api/v2/runtimes" | tee "${RUNTIMES_FILE}"
 echo
 
-if grep -q '"language":"python"' "${RUNTIMES_FILE}"; then
-	echo "==> Execute Python example"
+if grep -q '"language":"bash"' "${RUNTIMES_FILE}"; then
+	echo "==> Execute Bash example"
 	curl -fsS -X POST "${BASE_URL}/api/v2/execute" \
 		-H 'Content-Type: application/json' \
 		-d '{
-			"language": "python",
+			"language": "bash",
 			"version": "*",
-			"files": [{"name": "main.py", "content": "print(\"Hello from Piston on Ubuntu 24.04\")"}],
+			"files": [{"name": "main.sh", "content": "echo Hello from Piston Bash on Ubuntu 24.04"}],
 			"stdin": ""
 		}'
 	echo
 else
-	echo "python runtime not installed yet. Install runtimes into /piston/packages first."
+	echo "bash runtime not installed yet. Install runtimes into /piston/packages first."
 fi
