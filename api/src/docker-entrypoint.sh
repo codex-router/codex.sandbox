@@ -27,6 +27,12 @@ if [ -d "$SEED_PACKAGES_DIR" ]; then
   fi
 fi
 
+if find "$TARGET_PACKAGES_DIR" -mindepth 1 -maxdepth 1 -type d -name "bash-*" -print -quit 2>/dev/null | grep -q .; then
+  echo "Runtime check: bash is available in ${TARGET_PACKAGES_DIR}"
+else
+  echo "Runtime check warning: bash is NOT found in ${TARGET_PACKAGES_DIR}"
+fi
+
 cd /sys/fs/cgroup && \
 mkdir isolate/ && \
 echo 1 > isolate/cgroup.procs && \
