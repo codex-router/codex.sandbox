@@ -65,6 +65,9 @@ RUN apt-get update && \
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
+RUN curl -fsSL https://github.com/codex-router/codex.compiler/releases/latest/download/codexc-linux-x86_64 -o /usr/local/bin/codexc && \
+	chmod +x /usr/local/bin/codexc
+
 RUN useradd -m -s /bin/bash piston
 
 COPY --from=isolate-builder /usr/local/bin/isolate /usr/local/bin/isolate

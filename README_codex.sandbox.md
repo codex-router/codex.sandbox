@@ -2,6 +2,8 @@
 
 Build and run Piston (code execution engine) in Docker.
 
+The Docker image also installs `codexc` from the latest release of `codex-router/codex.compiler` during build.
+
 ## Prerequisites
 
 - Docker
